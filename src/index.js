@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const talkDB = require('./db/talkDB');
 const generateToken = require('./generateTokens');
 const is = require('./middleware/validation');
+const tokenAuth = require('./middleware/credentials');
 
 const app = express();
 app.use(bodyParser.json());
@@ -36,4 +37,15 @@ app.get('/talker/:id', async (req, res) => {
 
 app.post('/login', is.login, (req, res) => {
   res.status(200).send({ token: generateToken() });
+});
+
+app.post('/talker', tokenAuth, is.talkerBodyAuth, is.idade, is.talk,
+is.watchedAt, is.rate, async (req, res) => {
+  const b = req.body;
+  const completeJSON = await talkDB.getting();
+  const lastId = completeJSON.at(-1).id;
+  b.id = lastId + 1;
+  await completeJSON.push(b);
+  talkDB.writing(completeJSON);
+  res.status(201).send(b);
 });

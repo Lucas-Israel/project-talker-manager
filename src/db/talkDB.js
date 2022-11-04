@@ -22,7 +22,17 @@ const gettingID = async (rID) => {
   }
 };
 
+const writing = async (ele) => {
+  try {
+    const elementToWrite = JSON.stringify(ele, null, 2);
+    fs.writeFile(join(__dirname, path), elementToWrite);
+  } catch (error) {
+    return error;
+  }
+};
+
 module.exports = {
   getting,
   gettingID,
+  writing,
 };
