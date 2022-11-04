@@ -21,3 +21,13 @@ app.get('/talker', async (req, res) => {
   const got = await talkDB.getting();
   res.status(200).send(got);
 });
+
+app.get('/talker/:id', async (req, res) => {
+  const { id } = req.params;
+  const got = await talkDB.gettingID(id);
+  if (got.length === 0) {
+ return res
+  .status(404).send({ message: 'Pessoa palestrante não encontrada' }); 
+}
+  res.status(200).send(got[0]);
+});

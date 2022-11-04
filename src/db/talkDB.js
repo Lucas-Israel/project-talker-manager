@@ -12,6 +12,17 @@ const getting = async () => {
   }
 };
 
+const gettingID = async (rID) => {
+  try {
+    const info = await fs.readFile(join(__dirname, path), 'utf-8');
+    const found = await JSON.parse(info).filter(({ id }) => +id === +rID);
+    return found;
+  } catch (error) {
+    return error;
+  }
+};
+
 module.exports = {
   getting,
+  gettingID,
 };
