@@ -61,3 +61,12 @@ is.watchedAt, is.rate, async (req, res) => {
   talkDB.writing(completeJSON);
   res.status(200).send(b);
 });
+
+app.delete('/talker/:id', tokenAuth, async (req, res) => {
+  const { id } = req.params;
+  const completeJSON = await talkDB.getting();
+  const index = completeJSON.findIndex((ele) => +ele.id === +id);
+  completeJSON.splice(index, 1);
+  talkDB.writing(completeJSON);
+  res.status(204).end();
+});
