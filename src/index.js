@@ -45,34 +45,34 @@ app.post('/login', is.login, (req, res) => {
   res.status(200).send({ token: generateToken() });
 });
 
-app.post('/talker', tokenAuth, is.talkerBodyAuth, is.idade, is.talk,
-is.watchedAt, is.rate, async (req, res) => {
-  const b = req.body;
-  const completeJSON = await talkDB.getting();
-  const lastId = completeJSON.at(-1).id;
-  b.id = lastId + 1;
-  await completeJSON.push(b);
-  talkDB.writing(completeJSON);
-  res.status(201).send(b);
-});
+// app.post('/talker', tokenAuth, is.talkerBodyAuth, is.idade, is.talk,
+// is.watchedAt, is.rate, async (req, res) => {
+//   const b = req.body;
+//   const completeJSON = await talkDB.getting();
+//   const lastId = completeJSON.at(-1).id;
+//   b.id = lastId + 1;
+//   await completeJSON.push(b);
+//   talkDB.writing(completeJSON);
+//   res.status(201).send(b);
+// });
 
-app.put('/talker/:id', tokenAuth, is.talkerBodyAuth, is.idade, is.talk,
-is.watchedAt, is.rate, async (req, res) => {
-  const { id } = req.params;
-  const b = req.body;
-  const completeJSON = await talkDB.getting();
-  const index = completeJSON.findIndex((ele) => +ele.id === +id);
-  b.id = completeJSON[index].id;
-  completeJSON.splice(index, 1, b);
-  talkDB.writing(completeJSON);
-  res.status(200).send(b);
-});
+// app.put('/talker/:id', tokenAuth, is.talkerBodyAuth, is.idade, is.talk,
+// is.watchedAt, is.rate, async (req, res) => {
+//   const { id } = req.params;
+//   const b = req.body;
+//   const completeJSON = await talkDB.getting();
+//   const index = completeJSON.findIndex((ele) => +ele.id === +id);
+//   b.id = completeJSON[index].id;
+//   completeJSON.splice(index, 1, b);
+//   talkDB.writing(completeJSON);
+//   res.status(200).send(b);
+// });
 
-app.delete('/talker/:id', tokenAuth, async (req, res) => {
-  const { id } = req.params;
-  const completeJSON = await talkDB.getting();
-  const index = completeJSON.findIndex((ele) => +ele.id === +id);
-  completeJSON.splice(index, 1);
-  talkDB.writing(completeJSON);
-  res.status(204).end();
-});
+// app.delete('/talker/:id', tokenAuth, async (req, res) => {
+//   const { id } = req.params;
+//   const completeJSON = await talkDB.getting();
+//   const index = completeJSON.findIndex((ele) => +ele.id === +id);
+//   completeJSON.splice(index, 1);
+//   talkDB.writing(completeJSON);
+//   res.status(204).end();
+// });
