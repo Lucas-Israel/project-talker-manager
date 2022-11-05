@@ -55,14 +55,14 @@ const watchedAt = (req, res, next) => {
   next();
 };
 
+const checkWholeRateRange = (a) => a < 1 || a > 5 || a % 1 !== 0;
+
 const rate = (req, res, next) => {
   const b = req.body;
-  if (!b.talk.rate) return res.status(400).send({ message: 'O campo "rate" é obrigatório' });
-  if (b.talk.rate < 1 || b.talk.rate > 5) {
-    return res
-      .status(400).send({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' }); 
-    }
-  if (b.talk.rate % 1 !== 0) {
+  if (!b.talk.rate && b.talk.rate !== 0) { 
+    return res.status(400).send({ message: 'O campo "rate" é obrigatório' }); 
+  }
+  if (checkWholeRateRange(b.talk.rate)) {
     return res
       .status(400).send({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' }); 
     }

@@ -29,9 +29,9 @@ app.get('/talker/:id', async (req, res) => {
   const { id } = req.params;
   const got = await talkDB.gettingID(id);
   if (got.length === 0) {
- return res
-  .status(404).send({ message: 'Pessoa palestrante não encontrada' }); 
-}
+    return res
+      .status(404).send({ message: 'Pessoa palestrante não encontrada' }); 
+    }
   res.status(200).send(got[0]);
 });
 
@@ -48,4 +48,16 @@ is.watchedAt, is.rate, async (req, res) => {
   await completeJSON.push(b);
   talkDB.writing(completeJSON);
   res.status(201).send(b);
+});
+
+app.put('/talker/:id', tokenAuth, is.talkerBodyAuth, is.idade, is.talk,
+is.watchedAt, is.rate, async (req, res) => {
+  const { id } = req.params;
+  const b = req.body;
+  const completeJSON = await talkDB.getting();
+  const index = completeJSON.findIndex((ele) => +ele.id === +id);
+  b.id = completeJSON[index].id;
+  completeJSON.splice(index, 1, b);
+  talkDB.writing(completeJSON);
+  res.status(200).send(b);
 });
