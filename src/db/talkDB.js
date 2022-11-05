@@ -31,8 +31,20 @@ const writing = async (ele) => {
   }
 };
 
+const nameQuery = async (query) => {
+  try {
+    const info = await fs.readFile(join(__dirname, path), 'utf-8');
+    const found = await JSON.parse(info).filter(({ name }) => name.toLowerCase()
+    .includes(query.toLowerCase()));
+    return found;
+  } catch (error) {
+    return console.log(error);
+  }
+};
+
 module.exports = {
   getting,
   gettingID,
   writing,
+  nameQuery,
 };

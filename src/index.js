@@ -20,6 +20,12 @@ app.listen(PORT, () => {
   console.log('Online');
 });
 
+app.get('/talker/search', tokenAuth, async (req, res) => {
+  const { q } = req.query;
+  const got = await talkDB.nameQuery(q);
+  res.status(200).send(got);
+});
+
 app.get('/talker', async (req, res) => {
   const got = await talkDB.getting();
   res.status(200).send(got);
